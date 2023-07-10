@@ -1,11 +1,10 @@
 package com.example.bankapplication.controller;
 
-import com.example.bankapplication.dto.CreditDebitRequestDTO;
-import com.example.bankapplication.dto.EnquiryRequest;
-import com.example.bankapplication.dto.UserRequestDTO;
-import com.example.bankapplication.dto.BankResponseDTO;
+import com.example.bankapplication.dto.*;
 import com.example.bankapplication.service.EmailService;
 import com.example.bankapplication.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.Table;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
+@Tag(name = "User Account Management APIs")
 public class UserController {
     private final UserService userService;
     private  final EmailService emailService;
@@ -42,6 +42,11 @@ public class UserController {
     public  ResponseEntity<BankResponseDTO> debitAmount(@RequestBody CreditDebitRequestDTO requestDTO) {
       BankResponseDTO debitAmount =   userService.debitAccount(requestDTO);
       return new ResponseEntity<>(debitAmount, HttpStatus.OK);
+    }
+    @PostMapping("/transfer")
+    public ResponseEntity<BankResponseDTO> transfer (@RequestBody TransferRequest request){
+     BankResponseDTO transferSum =  userService.transfer(request);
+     return new ResponseEntity<>(transferSum, HttpStatus.OK);
     }
 
 }
